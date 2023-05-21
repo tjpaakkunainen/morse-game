@@ -1,4 +1,4 @@
-MORSE_DICT = {
+MORSE_ALPHABET = {
     '.-': 'A',
     '-...': 'B',
     '-.-.': 'C',
@@ -24,7 +24,10 @@ MORSE_DICT = {
     '.--': 'W',
     '-..-': 'X',
     '-.--': 'Y',
-    '--..': 'Z',
+    '--..': 'Z'
+}
+
+MORSE_NUMS = {
     '.----': '1',
     '..---': '2',
     '...--': '3',
@@ -35,6 +38,9 @@ MORSE_DICT = {
     '---..': '8',
     '----.': '9',
     '-----': '0',
+}
+
+MORSE_SPECIALS = {
     '.-.-.-': '.',
     '--..--': ',',
     '..--..': '?',
@@ -53,5 +59,7 @@ MORSE_DICT = {
     '.-..-.': '"',
     '...-..-': '$',
     '.--.-.': '@',
-    '...---...': 'SOS'  # Additional special case for SOS distress signal
+    '...---...': 'SOS'
 }
+
+MORSE_ALL = {**MORSE_ALPHABET, **MORSE_NUMS, **MORSE_SPECIALS}
