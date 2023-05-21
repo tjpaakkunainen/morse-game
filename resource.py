@@ -63,3 +63,14 @@ MORSE_SPECIALS = {
 }
 
 MORSE_ALL = {**MORSE_ALPHABET, **MORSE_NUMS, **MORSE_SPECIALS}
+
+FAIL_MESSAGES = [
+    "So close!",
+    "Almost!",
+    "Darn!",
+    "Gosh.",
+    "Awww..",
+    "Nope.",
+    "Nein.",
+    "Oh noes."
+]
