@@ -1,52 +1,42 @@
-""" from pynput import keyboard 
+from pynput import keyboard
+from threading import Timer
 import time
 
-# WIP!!!!
+THRESHOLD = 0.3
 
-def on_key_release(key): #what to do on key-release
-    time_taken = round(time.time() - t, 2) #rounding the long decimal float
-    # dfprint("The key",key," is pressed for",time_taken,'seconds')
-    return time_taken #stop detecting more key-releases
-
-def on_key_press(key): #what to do on key-press
-    return False #stop detecting more key-presses
-
-
-
-t = time.time() #reading time in sec
 def main():
-    print("hello!")
-    with keyboard.Listener(on_press = on_key_press) as press_listener: #setting code for listening key-press
-        press_listener.join()
+    def on_key_press(key = None):
+        return False
 
-    with keyboard.Listener(on_release = on_key_release) as release_listener: #setting code for listening key-release
-        time = release_listener.join()
-        print(time)
+    def on_key_release(key = None):
+        if input_round:
+            input_round.cancel()
 
-x = main()
-print(x)
+        time_pressed = round(time.time() - t, 2)
 
-# WIP !!! """
+        input_chars.append("-") if time_pressed > THRESHOLD else input_chars.append(".")
 
+        return False
 
-from pynput import keyboard 
-import time
+    def parse_char(input_chars: list):
+        cleaned = " ".join(input_chars)
+        print(cleaned)
+        input_chars.clear()
 
-def on_key_release(key): #what to do on key-release
-    time_taken = round(time.time() - t, 2) #rounding the long decimal float
-    print("The key",key," is pressed for",time_taken,'seconds')
-    return False #stop detecting more key-releases
+    input_round = None
+    input_chars = []
 
-def on_key_press(key): #what to do on key-press
-    return False #stop detecting more key-presses
+    while True:
+        with keyboard.Listener(on_press=on_key_press) as press_listener:
+            press_listener.join()
 
-with keyboard.Listener(on_press = on_key_press) as press_listener: #setting code for listening key-press
-    press_listener.join()
+        t = time.time()
 
-t = time.time() #reading time in sec
+        with keyboard.Listener(on_release=on_key_release) as release_listener:
+            release_listener.join()
 
-with keyboard.Listener(on_release = on_key_release) as release_listener: #setting code for listening key-release
-    release_listener.join()
+        input_round = Timer(1.5, parse_char, args=(input_chars,))
+        input_round.start()
 
 if __name__ == "__main__":
-    
+    main()
