@@ -1,11 +1,13 @@
 from pynput import keyboard
 from threading import Timer
+from resource import MORSE_ALL as morse_all_chars
+import random
 import time
-
 
 THRESHOLD = 0.3
 
-def main():
+def play():
+
     def on_key_press(key = None):
         return False
 
@@ -19,14 +21,28 @@ def main():
 
         return False
 
-    def parse_char(input_chars: list):
-        cleaned = " ".join(input_chars)
+    def parse_char(input_chars: list, char_to_be_guessed: str):
+        cleaned = "".join(input_chars)
         print()
-        print(cleaned)
+        if cleaned in morse_all_chars.keys():
+            print(f"Your guess: {cleaned} which corresponds to: {morse_all_chars[cleaned]}")
+        else:
+            print(f"Your guess: {cleaned} which I cannot fathom")
+
+        if morse_all_chars[cleaned] == char_to_be_guessed:
+            print("HIP FUCKING HORAY")
+        else:
+            ch_index = list(morse_all_chars.values()).index(char_to_be_guessed)
+            right_choice = list(enumerate(morse_all_chars.keys()))[ch_index][1]
+            print(f"right answer would have been {right_choice}")
+
         input_chars.clear()
 
     input_round = None
     input_chars = []
+
+    char_to_be_guessed = random.choice(list(morse_all_chars.values()))
+    print("What's this in morse: ", char_to_be_guessed)
 
     while True:
         with keyboard.Listener(on_press=on_key_press) as press_listener:
@@ -37,8 +53,19 @@ def main():
         with keyboard.Listener(on_release=on_key_release) as release_listener:
             release_listener.join()
 
-        input_round = Timer(1.5, parse_char, args=(input_chars,))
+        input_round = Timer(1.5, parse_char, args=(input_chars, char_to_be_guessed))
+        input_round.daemon = True
         input_round.start()
+
+def main():
+    while True:
+        whatdo = input("wanna play? ")
+        if "y" in whatdo:
+            play()
+        else:
+            print("you answered:", whatdo)
+            print("quit!")
+            break
 
 if __name__ == "__main__":
     main()
