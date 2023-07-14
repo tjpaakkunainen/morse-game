@@ -2,6 +2,7 @@ from pynput import keyboard
 from threading import Timer
 import time
 
+
 THRESHOLD = 0.3
 
 def main():
@@ -20,6 +21,7 @@ def main():
 
     def parse_char(input_chars: list):
         cleaned = " ".join(input_chars)
+        print()
         print(cleaned)
         input_chars.clear()
 
