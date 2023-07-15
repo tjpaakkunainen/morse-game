@@ -1,8 +1,9 @@
 from pynput import keyboard
-from threading import Timer
+from threading import Timer, Event
 from resource import MORSE_ALL as morse_all_chars
 import random
 import time
+import sys
 
 THRESHOLD = 0.3
 
@@ -30,21 +31,26 @@ def play():
             print(f"Your guess: {cleaned} which I cannot fathom")
 
         if morse_all_chars[cleaned] == char_to_be_guessed:
-            print("HIP FUCKING HORAY")
+            print("Correct!")
         else:
             ch_index = list(morse_all_chars.values()).index(char_to_be_guessed)
             right_choice = list(enumerate(morse_all_chars.keys()))[ch_index][1]
             print(f"right answer would have been {right_choice}")
 
         input_chars.clear()
+        condition.set()
+        sys.exit()
+
 
     input_round = None
     input_chars = []
+    condition = Event()
 
     char_to_be_guessed = random.choice(list(morse_all_chars.values()))
     print("What's this in morse: ", char_to_be_guessed)
 
-    while True:
+    while not condition.is_set():
+        print("cond while", condition.is_set())
         with keyboard.Listener(on_press=on_key_press) as press_listener:
             press_listener.join()
 
@@ -63,7 +69,7 @@ def main():
         if "y" in whatdo:
             play()
         else:
-            print("you answered:", whatdo)
+            print("you commanded:", whatdo)
             print("quit!")
             break
 
