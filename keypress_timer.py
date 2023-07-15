@@ -23,34 +23,37 @@ def play():
         return False
 
     def parse_char(input_chars: list, char_to_be_guessed: str):
+ 
         cleaned = "".join(input_chars)
+        ch_index = list(morse_all_chars.values()).index(char_to_be_guessed)
+        right_choice = list(enumerate(morse_all_chars.keys()))[ch_index][1]
         print()
-        if cleaned in morse_all_chars.keys():
+        try:
             print(f"Your guess: {cleaned} which corresponds to: {morse_all_chars[cleaned]}")
-        else:
+
+            if morse_all_chars[cleaned] == char_to_be_guessed:
+                print("Correct!", end=" ")
+
+        except KeyError:
             print(f"Your guess: {cleaned} which I cannot fathom")
-
-        if morse_all_chars[cleaned] == char_to_be_guessed:
-            print("Correct!")
-        else:
-            ch_index = list(morse_all_chars.values()).index(char_to_be_guessed)
-            right_choice = list(enumerate(morse_all_chars.keys()))[ch_index][1]
-            print(f"right answer would have been {right_choice}")
-
-        input_chars.clear()
-        condition.set()
-        sys.exit()
+  
+        finally:
+            print(f"Right answer: {right_choice} ({char_to_be_guessed})")
+            game_active.clear()
+            input_chars.clear()
+            time.sleep(1)
+            print("press any key to continue")
+            sys.exit()
 
 
     input_round = None
     input_chars = []
-    condition = Event()
+    game_active = ["yes"]
 
     char_to_be_guessed = random.choice(list(morse_all_chars.values()))
     print("What's this in morse: ", char_to_be_guessed)
 
-    while not condition.is_set():
-        print("cond while", condition.is_set())
+    while True:
         with keyboard.Listener(on_press=on_key_press) as press_listener:
             press_listener.join()
 
@@ -59,7 +62,10 @@ def play():
         with keyboard.Listener(on_release=on_key_release) as release_listener:
             release_listener.join()
 
-        input_round = Timer(1.5, parse_char, args=(input_chars, char_to_be_guessed))
+        if not game_active:
+            break
+
+        input_round = Timer(1.0, parse_char, args=(input_chars, char_to_be_guessed))
         input_round.daemon = True
         input_round.start()
 
