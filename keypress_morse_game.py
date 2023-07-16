@@ -1,15 +1,19 @@
 from pynput import keyboard
-from threading import Timer, Event
+from pynput.keyboard import Key
+from threading import Timer
 from resource import MORSE_COMMON as morse_characters
 import random
 import time
+import os
 import sys
 
 THRESHOLD = 0.3
 
 def play():
 
-    def on_key_press(key = None):
+    def on_key_press(key):
+        if key != Key.space and key != Key.enter:
+            print("\n\nPlease adhere to spacebar!\n")
         return False
 
     def on_key_release(key = None):
@@ -44,6 +48,7 @@ def play():
             time.sleep(0.5)
             print("\nPress enter to continue, ctrl+c to quit")
             time.sleep(0.5)
+
             sys.exit()
 
     input_round = None
@@ -72,18 +77,24 @@ def play():
 def main():
     print("\nWelcome to morse game!\n\nYour spacebar is the key. Program gives you a character and you need to translate it to "
           "morse.\nShort press is dit ('.') and longer press is dah ('-'). Good luck! \n")
-    first_time = True
-    while True:
-        if first_time:
-            whatdo = input("Press enter to play, type y to quit: \n")
-        else:
-            whatdo = input()
-        if "y" in whatdo:
-            print("\nBye!")
-            break
-        else:
-            play()
-        first_time = False
+    try:
+        first_time = True
+        while True:
+            if first_time:
+                whatdo = input("Press enter to play, type q to quit: \n")
+            else:
+                whatdo = input()
+            if "q" in whatdo:
+                print("\nBye!\n")
+                break
+            else:
+                play()
+            first_time = False
+    except KeyboardInterrupt:
+        print("\nBye!\n")
+        time.sleep(0.5)
+        os.system("clear")
+        sys.exit()
 
 if __name__ == "__main__":
     main()
