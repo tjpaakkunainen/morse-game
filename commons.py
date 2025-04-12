@@ -1,4 +1,4 @@
-MORSE_ALPHABET = {
+MORSE_TO_ALPHABET = {
     '.-': 'A',
     '-...': 'B',
     '-.-.': 'C',
@@ -27,7 +27,7 @@ MORSE_ALPHABET = {
     '--..': 'Z'
 }
 
-MORSE_NUMS = {
+MORSE_TO_NUMS = {
     '.----': '1',
     '..---': '2',
     '...--': '3',
@@ -40,7 +40,7 @@ MORSE_NUMS = {
     '-----': '0',
 }
 
-MORSE_SPECIALS = {
+MORSE_TO_SPECIALS = {
     '.-.-.-': '.',
     '--..--': ',',
     '..--..': '?',
@@ -62,17 +62,10 @@ MORSE_SPECIALS = {
     '...---...': 'SOS'
 }
 
-MORSE_ALL = {**MORSE_ALPHABET, **MORSE_NUMS, **MORSE_SPECIALS}
+MORSE_ALL = {**MORSE_TO_ALPHABET, **MORSE_TO_NUMS, **MORSE_TO_SPECIALS}
 
-MORSE_COMMON = {**MORSE_ALPHABET, **MORSE_NUMS}
+ALL_TO_MORSE = {value: key for key, value in MORSE_ALL.items()}
 
-FAIL_MESSAGES = [
-    "So close!",
-    "Almost!",
-    "Darn!",
-    "Gosh.",
-    "Awww..",
-    "Nope.",
-    "Nein.",
-    "Oh noes."
-]
+MORSE_COMMON = {**MORSE_TO_ALPHABET, **MORSE_TO_NUMS}
+
+COMMON_TO_MORSE = {value: key for key, value in MORSE_COMMON.items()}
