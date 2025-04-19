@@ -17,5 +17,3 @@ A fun and interactive game to practice Morse code! Translate characters into Mor
 `python main.py`
 
 Space = morse key
-
-(only transmit implemented so far!)
