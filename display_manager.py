@@ -134,11 +134,17 @@ class DisplayManager:
         self.screen.fill(GAME_COLORS["BLACK"], input_rect)
         # Draw current input
         self.display_text("".join(state_manager.transmit_input_chars), (20, 130), self.font)
-
         # Clear previous status area
         status_rect = pygame.Rect(SCREEN_WIDTH - 150, SCREEN_HEIGHT - 50, 130, FONT_SIZE)
         self.screen.fill(GAME_COLORS["BLACK"], status_rect)
 
+        pygame.display.flip()
+
+    def display_receive_game(self, state_manager):
+        self.screen.fill(GAME_COLORS["BLACK"])
+        self.display_text(f"Listen and type the character", (20, 50), self.font)
+        self.display_text(f"Score: {state_manager.score}", (SCREEN_WIDTH - 100, 20), self.font, GAME_COLORS["YELLOW"])
+        self.display_common_elements(state_manager.state)
         pygame.display.flip()
 
     def display_result(self, state_manager):
@@ -146,6 +152,11 @@ class DisplayManager:
         correct_char = ALL_CHARS_TO_MORSE.get(state_manager.char_to_be_guessed, "???")
         correct_text = f"Answer: {correct_char} ({state_manager.char_to_be_guessed})"
         user_text = f"You sent: {''.join(state_manager.transmit_input_chars)}"
+        self.display_result_common(state_manager.result_message, GAME_COLORS[state_manager.result_color], state_manager.score, correct_text, user_text)
+
+    def display_receive_result(self, state_manager):
+        user_text = f"You guessed: {state_manager.receive_input_char} ({ALL_CHARS_TO_MORSE.get(state_manager.receive_input_char, '?')})"
+        correct_text = f"Answer: {state_manager.char_to_receive} ({ALL_CHARS_TO_MORSE.get(state_manager.char_to_receive, '?')})"
         self.display_result_common(state_manager.result_message, GAME_COLORS[state_manager.result_color], state_manager.score, correct_text, user_text)
 
     def display_result_common(self, result_msg, result_clr, score, correct_ans_text, user_guess_text=""):

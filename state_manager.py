@@ -41,8 +41,6 @@ class StateManager:
         # Receive game variables
         self.char_to_receive = None
         self.receive_input_char = ""
-        self.receive_correct_answer = None
-        self.receive_user_guess = None
         
         # Practice mode variables
         self.practice_input_char = ""
@@ -102,6 +100,9 @@ class StateManager:
                 self.transmit_input_complete = True
                 self.parse_transmit_input()
         
+        elif self.state == "receive_game" and self.receive_input_char:
+            self.validate_receive_input()
+
         # Practice morse->char input timeout check
         elif self.state == "practice_morse_to_char" and not self.practice_input_complete:
             if (self.practice_last_input_time > 0 and
@@ -120,15 +121,18 @@ class StateManager:
         self.transmit_last_input_time = 0
         self.transmit_input_complete = False
     
-    # FIXME: finalize receive game
     def initialize_receive_game(self):
         """Initialize the receive game state for a new round."""
         self.receive_input_char = ""
         valid_receive_chars = list(ALL_MORSE_CHARACTERS.values())
         self.char_to_receive = random.choice(valid_receive_chars)
-        self.receive_correct_answer = self.char_to_receive
-        self.receive_user_guess = ""
-    
+
+        # FIXME: this does not feel right, should probably be in the sound manager
+        from sound_manager import SoundManager
+
+        sound_manager = SoundManager()
+        sound_manager.play_morse_character(self.char_to_receive)
+
     # FIXME: finalize practice, rename for clarity
     def initialize_practice_morse_to_char(self):
         """Reset state for morse -> character practice."""
@@ -162,7 +166,23 @@ class StateManager:
         self.state = "result"
         self.result_display_time = pygame.time.get_ticks()
         self.transmit_input_complete = False
-    
+
+    def validate_receive_input(self):
+        if self.receive_input_char == self.char_to_receive:
+            self.result_message = "CORRECT!"
+            self.result_color = "GREEN"
+            self.score += 1
+        else:
+            if self.receive_input_char in ALL_CHARS_TO_MORSE:
+                self.result_message = "WRONG!"
+                self.result_color = "RED"
+            else:
+                self.result_message = "INVALID MORSE!"
+                self.result_color = "ORANGE"
+        time.sleep(0.2)
+        self.state = "receive_result"
+        self.result_display_time = pygame.time.get_ticks()
+
     # TODO: finalize
     def parse_practice_morse_input(self):
         """Parse the morse input in practice mode."""

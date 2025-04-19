@@ -127,24 +127,12 @@ class InputHandler:
             self.state_manager.transmit_input_chars.append("-" if time_pressed > THRESHOLD else ".")
             self.state_manager.transmit_last_input_time = pygame.time.get_ticks()
 
-    # TODO: finalize
     def _handle_keydown_receive_game(self, event):
         """Handle key presses in receive game."""
         if not self.sound_manager.is_sound_thread_active():
             if event.unicode.upper() in ALL_CHARS_TO_MORSE:
                 self.state_manager.receive_input_char = event.unicode.upper()
-                self.state_manager.receive_user_guess = self.state_manager.receive_input_char
-
-                if self.state_manager.receive_input_char == self.state_manager.char_to_receive:
-                    self.state_manager.result_message = "CORRECT!"
-                    self.state_manager.result_color = (0, 255, 0)  # GREEN
-                    self.state_manager.score += 1
-                else:
-                    self.state_manager.result_message = "WRONG!"
-                    self.state_manager.result_color = (255, 0, 0)  # RED
-                
-                self.state_manager.state = "receive_result"
-                self.state_manager.result_display_time = pygame.time.get_ticks()
+            self.state_manager.result_display_time = pygame.time.get_ticks()
 
     def _handle_keyup_practice_morse_to_char(self, event):
         """Handle space key release in morse->char practice."""
