@@ -7,8 +7,10 @@ from commons import MORSE_COMMON as ALL_MORSE_CHARACTERS, COMMON_TO_MORSE as ALL
 INPUT_TIMEOUT = 1000  # In milliseconds
 
 class StateManager:
-    def __init__(self):
+    def __init__(self, sound_manager):
         """Initialize the game state manager."""
+        self.sound_manager = sound_manager
+
         # Main state
         self.state = "menu"
         
@@ -126,12 +128,7 @@ class StateManager:
         self.receive_input_char = ""
         valid_receive_chars = list(ALL_MORSE_CHARACTERS.values())
         self.char_to_receive = random.choice(valid_receive_chars)
-
-        # FIXME: this does not feel right, should probably be in the sound manager
-        from sound_manager import SoundManager
-
-        sound_manager = SoundManager()
-        sound_manager.play_morse_character(self.char_to_receive)
+        self.sound_manager.play_morse_character(self.char_to_receive)
 
     # FIXME: finalize practice, rename for clarity
     def initialize_practice_morse_to_char(self):

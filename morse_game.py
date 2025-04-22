@@ -12,11 +12,11 @@ class MorseGame:
         
         self.sound_manager = SoundManager()
         self.display_manager = DisplayManager(self.screen)
-        self.state_manager = StateManager()
+        self.state_manager = StateManager(self.sound_manager)
         self.input_handler = InputHandler(self.state_manager, self.display_manager, self.sound_manager)
 
         self.running = True
-        
+
     def run_game_loop(self):
         """Main game loop."""
         clock = pygame.time.Clock()
