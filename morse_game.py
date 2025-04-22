@@ -4,15 +4,17 @@ from display_manager import DisplayManager
 from state_manager import StateManager
 from input_handler import InputHandler
 from sound_manager import SoundManager
+from config_manager import ConfigManager
 
 class MorseGame:
     def __init__(self):
         self.screen = pygame.display.set_mode((400, 300))
         pygame.display.set_caption("Morse Code Game")
         
+        self.config_manager = ConfigManager()
         self.sound_manager = SoundManager()
         self.display_manager = DisplayManager(self.screen)
-        self.state_manager = StateManager(self.sound_manager)
+        self.state_manager = StateManager(self.sound_manager, self.config_manager)
         self.input_handler = InputHandler(self.state_manager, self.display_manager, self.sound_manager)
 
         self.running = True

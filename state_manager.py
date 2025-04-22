@@ -3,13 +3,12 @@ import time
 import random
 from commons import MORSE_COMMON as ALL_MORSE_CHARACTERS, COMMON_TO_MORSE as ALL_CHARS_TO_MORSE
 
-# Constants
-INPUT_TIMEOUT = 1000  # In milliseconds
 
 class StateManager:
-    def __init__(self, sound_manager):
+    def __init__(self, sound_manager, config_manager):
         """Initialize the game state manager."""
         self.sound_manager = sound_manager
+        self.config_manager = config_manager
 
         # Main state
         self.state = "menu"
@@ -51,7 +50,10 @@ class StateManager:
         self.practice_start_time = None
         self.practice_last_input_time = 0
         self.practice_input_complete = False
-    
+
+        # Game configurations
+        self.input_timeout_ms = self.config_manager.get_input_timeout()
+
     def update(self, current_time_ms):
         """Update game state based on timers and input state."""
         # TODO: Should be possible to skip countdown
@@ -97,7 +99,7 @@ class StateManager:
         # Transmit game input timeout check
         elif self.state == "play" and not self.transmit_input_complete:
             if (self.transmit_last_input_time > 0 and
-                current_time_ms - self.transmit_last_input_time > INPUT_TIMEOUT and
+                current_time_ms - self.transmit_last_input_time > self.input_timeout_ms and
                 len(self.transmit_input_chars) > 0):
                 self.transmit_input_complete = True
                 self.parse_transmit_input()
@@ -108,7 +110,7 @@ class StateManager:
         # Practice morse->char input timeout check
         elif self.state == "practice_morse_to_char" and not self.practice_input_complete:
             if (self.practice_last_input_time > 0 and
-                current_time_ms - self.practice_last_input_time > INPUT_TIMEOUT and
+                current_time_ms - self.practice_last_input_time > self.input_timeout_ms and
                 len(self.practice_morse_input) > 0):
                 self.practice_input_complete = True
                 self.parse_practice_morse_input()
