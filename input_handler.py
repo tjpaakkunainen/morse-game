@@ -11,14 +11,16 @@ class InputHandler:
         self.display_manager = display_manager
         self.sound_manager = sound_manager
         
-    def handle_event(self, event, current_time_ms):
+    def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             self.handle_keydown(event)
         elif event.type == pygame.KEYUP:
             self.handle_keyup(event)
     
     def handle_keydown(self, event):
-        """Handle key press events."""
+        """Handle key press events. State-specific handlers are called based on the
+        current state in state_manager, e.g. menu, play_menu, transmit_game, etc.
+        """
         # Global Keys
         if event.key == pygame.K_ESCAPE:
             self._handle_escape()

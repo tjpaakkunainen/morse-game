@@ -37,7 +37,7 @@ class MorseGame:
                 if event.type == pygame.QUIT:
                     self.quit_game()
                 else:
-                    self.input_handler.handle_event(event, current_time_ms)
+                    self.input_handler.handle_event(event)
             
             # FIXME: needless duplication with event handling?
             if self.state_manager.state == "quit":
