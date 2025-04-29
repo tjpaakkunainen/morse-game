@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 import threading
-from commons import ALL_TO_MORSE as ALL_CHARS_TO_MORSE
+from src.commons import ALL_TO_MORSE as ALL_CHARS_TO_MORSE
 
 class SoundManager:
     def __init__(self):

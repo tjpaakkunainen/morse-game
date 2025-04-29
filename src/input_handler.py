@@ -1,6 +1,6 @@
 import pygame
 import time
-from commons import ALL_TO_MORSE as ALL_CHARS_TO_MORSE
+from src.commons import ALL_TO_MORSE as ALL_CHARS_TO_MORSE
 
 # TODO: should be modifiable?
 THRESHOLD = 0.2  # Time threshold for dot vs dash

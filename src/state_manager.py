@@ -1,7 +1,7 @@
 import pygame
 import time
 import random
-from commons import MORSE_COMMON as ALL_MORSE_CHARACTERS, COMMON_TO_MORSE as ALL_CHARS_TO_MORSE
+from src.commons import MORSE_COMMON as ALL_MORSE_CHARACTERS, COMMON_TO_MORSE as ALL_CHARS_TO_MORSE
 
 
 class StateManager:

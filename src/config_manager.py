@@ -3,7 +3,7 @@ import os
 import copy
 
 class ConfigManager:
-    def __init__(self, config_path='config.json'):
+    def __init__(self, config_path='resources/config.json'):
 
     # Default configuration values, should not be modified
         self.default_config = {

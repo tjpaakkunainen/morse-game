@@ -1,6 +1,6 @@
 import pygame
 import time
-from commons import COMMON_TO_MORSE as ALL_CHARS_TO_MORSE
+from src.commons import COMMON_TO_MORSE as ALL_CHARS_TO_MORSE
 
 # Constants
 SCREEN_WIDTH = 400

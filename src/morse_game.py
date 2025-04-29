@@ -1,10 +1,10 @@
 import pygame
 import sys
-from display_manager import DisplayManager
-from state_manager import StateManager
-from input_handler import InputHandler
-from sound_manager import SoundManager
-from config_manager import ConfigManager
+from src.display_manager import DisplayManager
+from src.state_manager import StateManager
+from src.input_handler import InputHandler
+from src.sound_manager import SoundManager
+from src.config_manager import ConfigManager
 
 class MorseGame:
     def __init__(self):

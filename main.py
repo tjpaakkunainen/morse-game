@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import pygame
-from morse_game import MorseGame
+from src.morse_game import MorseGame
 
 def main():
     pygame.init()
