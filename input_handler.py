@@ -37,8 +37,8 @@ class InputHandler:
     def handle_keyup(self, event):
         """Handle key release events."""
         # Handle specific key releases for states
-        if self.state_manager.state == "play" and event.key == pygame.K_SPACE:
-            self._handle_keyup_play()
+        if self.state_manager.state == "transmit_game" and event.key == pygame.K_SPACE:
+            self._handle_keyup_transmit_game()
         elif self.state_manager.state == "practice_morse_to_char" and event.key == pygame.K_SPACE:
             self._handle_keyup_practice_morse_to_char(event)
     
@@ -46,7 +46,7 @@ class InputHandler:
     # FIXME: final_score should probably be displayed only if there is a result
     def _handle_escape(self):
         """Handle escape key globally."""
-        if self.state_manager.state in ["play", "receive_game"]:
+        if self.state_manager.state in ["transmit_game", "receive_game"]:
             self.state_manager.exiting_to = "quit"
             self.state_manager.state = "final_score"
             self.state_manager.result_display_time = pygame.time.get_ticks()
@@ -55,7 +55,7 @@ class InputHandler:
     
     def _handle_backspace(self):
         """Handle backspace key globally."""
-        if self.state_manager.state in ["play", "receive_game", "result", "receive_result"]:
+        if self.state_manager.state in ["transmit_game", "receive_game", "result", "receive_result"]:
             self.state_manager.exiting_to = "menu"
             self.state_manager.state = "final_score"
             self.state_manager.result_display_time = pygame.time.get_ticks()
@@ -95,8 +95,8 @@ class InputHandler:
             self.state_manager.countdown_start_time = time.time()
             if self.state_manager.play_menu_selection == 0:  # Receive
                 self.state_manager.next_state_after_countdown = "receive_game"
-            else:  # Transmit
-                self.state_manager.next_state_after_countdown = "play"
+            else:
+                self.state_manager.next_state_after_countdown = "transmit_game"
     
     def _handle_keydown_practice_sub_menu(self, event):
         """Handle key presses in practice submenu."""
@@ -112,14 +112,14 @@ class InputHandler:
                 self.state_manager.state = "practice_morse_to_char"
                 self.state_manager.initialize_practice_morse_to_char()
     
-    def _handle_keydown_play(self, event):
+    def _handle_keydown_transmit_game(self, event):
         """Handle key presses in transmit game."""
         if event.key == pygame.K_SPACE and not self.sound_manager.sound_playing:
             self.state_manager.transmit_start_time = time.time()
             self.sound_manager.start_tone()
             self.state_manager.transmit_last_input_time = 0
 
-    def _handle_keyup_play(self):
+    def _handle_keyup_transmit_game(self):
         """Handle space key release in transmit game."""
         if self.sound_manager.sound_playing:
             self.sound_manager.stop_tone()

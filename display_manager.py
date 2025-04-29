@@ -119,7 +119,7 @@ class DisplayManager:
                      pygame.font.Font(None, 72), GAME_COLORS["YELLOW"], center=True)
         pygame.display.flip()
         
-    def display_play(self, state_manager):
+    def display_transmit_game(self, state_manager):
         """Displays the main transmit game screen."""
         
         # FIXME: draw only once per round

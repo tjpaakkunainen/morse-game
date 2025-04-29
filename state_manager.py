@@ -32,7 +32,7 @@ class StateManager:
         # Countdown variables
         self.countdown_value = 3
         self.countdown_start_time = 0
-        self.next_state_after_countdown = "play"
+        self.next_state_after_countdown = "transmit_game"
         
         # Result display variables
         self.result_display_time = 0
@@ -64,7 +64,7 @@ class StateManager:
             if elapsed >= 4:  # After 3,2,1,GO (1s each)
                 self.state = self.next_state_after_countdown
                 self.score = 0  # Reset score for new game session
-                if self.next_state_after_countdown == "play":
+                if self.next_state_after_countdown == "transmit_game":
                     self.initialize_transmit_game()
                 elif self.next_state_after_countdown == "receive_game":
                     self.initialize_receive_game()
@@ -80,7 +80,7 @@ class StateManager:
                 else:
                     # Transition to next round
                     if self.state == "result":
-                        self.state = "play"
+                        self.state = "transmit_game"
                         self.initialize_transmit_game()
                     elif self.state == "receive_result":
                         self.state = "receive_game"
@@ -97,7 +97,7 @@ class StateManager:
                     self.exiting_to = None
         
         # Transmit game input timeout check
-        elif self.state == "play" and not self.transmit_input_complete:
+        elif self.state == "transmit_game" and not self.transmit_input_complete:
             if (self.transmit_last_input_time > 0 and
                 current_time_ms - self.transmit_last_input_time > self.input_timeout_ms and
                 len(self.transmit_input_chars) > 0):
