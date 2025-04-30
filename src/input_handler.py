@@ -41,8 +41,6 @@ class InputHandler:
         # Handle specific key releases for states
         if self.state_manager.state == "transmit_game" and event.key == pygame.K_SPACE:
             self._handle_keyup_transmit_game()
-        elif self.state_manager.state == "practice_morse_to_char" and event.key == pygame.K_SPACE:
-            self._handle_keyup_practice_morse_to_char(event)
     
     # --- Global key handlers ---
     # FIXME: final_score should probably be displayed only if there is a result
@@ -109,10 +107,8 @@ class InputHandler:
         elif event.key == pygame.K_RETURN:
             if self.state_manager.practice_menu_selection == 0:  # Char -> Morse
                 self.state_manager.state = "practice_char_to_morse"
-                self.state_manager.practice_input_char = "?"
             elif self.state_manager.practice_menu_selection == 1:  # Morse -> Char
                 self.state_manager.state = "practice_morse_to_char"
-                self.state_manager.initialize_practice_morse_to_char()
     
     def _handle_keydown_transmit_game(self, event):
         """Handle key presses in transmit game."""
@@ -136,25 +132,4 @@ class InputHandler:
                 self.state_manager.receive_input_char = event.unicode.upper()
             self.state_manager.result_display_time = pygame.time.get_ticks()
 
-    def _handle_keyup_practice_morse_to_char(self, event):
-        """Handle space key release in morse->char practice."""
-        if self.sound_manager.sound_playing:
-            self.sound_manager.stop_tone()
-            time_pressed = time.time() - self.state_manager.practice_start_time
-            self.state_manager.practice_morse_input.append("-" if time_pressed > THRESHOLD else ".")
-            self.state_manager.practice_last_input_time = pygame.time.get_ticks()
-
-    def _handle_keydown_practice_morse_to_char(self, event):
-        """Handle key presses in morse->char practice."""
-        if event.key == pygame.K_SPACE and not self.sound_manager.sound_playing:
-            self.state_manager.practice_start_time = time.time()
-            self.sound_manager.start_tone()
-            self.state_manager.practice_last_input_time = 0
-
-    def _handle_keydown_practice_char_to_morse(self, event):
-        """Handle key presses in char->morse practice."""
-        char = event.unicode.upper()
-        if char in ALL_CHARS_TO_MORSE:
-            self.state_manager.practice_input_char = char
-            self.sound_manager.play_morse_character(char)
     
