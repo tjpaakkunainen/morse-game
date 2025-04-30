@@ -37,7 +37,7 @@ class StateManager:
         # Result display variables
         self.result_display_time = 0
         self.result_message = ""
-        self.result_color = (255, 255, 255)  # WHITE
+        self.result_color = "WHITE"
 
         # Receive game variables
         self.char_to_receive = None
